@@ -4,6 +4,36 @@ from triangulator.geometry.points import is_point_inside_triangle
 def triangulate(poligon: tuple) -> list:
     """
     This function will triangulate any polygon and return a list of triangles
+
+        Parameters: 
+            poligon (tuple): A tuple of tuples with the points of the polygon
+        Returns:
+            list: A list of tuples with the triangles vertices
+
+    """
+
+
+    """
+    Explanation:
+    ============
+
+        This function will triangulate any polygon and return a list of triangles
+        The algorithm is based on the ear clipping method, which is a simple method
+
+    Algorithm:
+    ==========
+
+        1. Find the internal angle of each vertex
+        2. Check if the angle is less than 180 degrees, skip if not
+        3. Check if there are any polygon points inside the triangle formed by the vertex and its neighbors
+        4. If there are no points inside the triangle, then the vertex is an ear
+        5. If the vertex is an ear, add the triangle to the list of triangles
+        6. Remove the ear and repeat the process until there are no more ears
+
+    References:
+    ===========
+        https://en.wikipedia.org/wiki/Polygon_triangulation#Ear_clipping_method
+        https://www.youtube.com/watch?v=QAdfkylpYwc
     """
 
     final_triangles = []

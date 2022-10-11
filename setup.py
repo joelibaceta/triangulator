@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="triangulator",
-    version="1.0.2",
+    version="1.0.3",
     author="Joel Ibaceta",
     author_email="mail@joelibaceta.com",
     license='MIT',
