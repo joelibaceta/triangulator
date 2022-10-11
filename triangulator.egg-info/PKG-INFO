@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: triangulator
+Version: 1.0.2
+Summary: A simple tool to calc triangles for any polygon
+Home-page: https://github.com/joelibaceta/triangulator
+Author: Joel Ibaceta
+Author-email: mail@joelibaceta.com
+License: MIT
+Project-URL: Source, https://github.com/joelibaceta/triangulator
+Project-URL: Tracker, https://github.com/joelibaceta/triangulator/issues
+Keywords: triangles,polygon,triangulator
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+
+A simple tool to calc triangles for any polygon

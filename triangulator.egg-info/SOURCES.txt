@@ -1,0 +1,12 @@
+README.md
+setup.py
+triangulator/__init__.py
+triangulator/triangulator.py
+triangulator.egg-info/PKG-INFO
+triangulator.egg-info/SOURCES.txt
+triangulator.egg-info/dependency_links.txt
+triangulator.egg-info/requires.txt
+triangulator.egg-info/top_level.txt
+triangulator/geometry/__init__.py
+triangulator/geometry/angles.py
+triangulator/geometry/points.py
