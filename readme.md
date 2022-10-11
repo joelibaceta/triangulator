@@ -20,7 +20,7 @@ pip install triangulator
 ```python
 from triangulator.ear_clipping import triangulate
 
-triangles = triangulate([(0, 0), (1, 0), (1, 1), (0, 1)])
+triangles = triangulate(((1, 1), (4, 2), (3, 2), (2, 7), (3, 4), (7, 3), (8, 3), (9, 0)))
 
 print(triangles)
 ```
