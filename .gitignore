@@ -3,4 +3,4 @@ trianglesenv
 __pycache__
 sample.py
 dist
-triangularenv.egg-info
+triangulator.egg-info
