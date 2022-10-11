@@ -2,3 +2,5 @@ trianglesenv
 .pyc
 __pycache__
 sample.py
+dist
+triangularenv.egg-info

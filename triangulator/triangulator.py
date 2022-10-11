@@ -29,7 +29,7 @@ def triangulate(poligon: tuple) -> list:
             triangle = (prev_vertice, vertice, next_vertice)
             points = [p for p in original_vertices if p not in triangle]
             inside_evaluation = [is_point_inside_triangle(triangle, point) for point in points]
-            print(f"Inside evaluation: {inside_evaluation}")
+            # If are not points inside the triangle
             if True in inside_evaluation:
                 # Skip because point is inside triangle
                 continue
