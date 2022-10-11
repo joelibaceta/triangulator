@@ -1,0 +1,6 @@
+include requirements.txt
+prune docs
+prune dist
+global-exclude *.md *.in
+recursive-include triangulator *.py
+recursive-exclude triangulator *.pyc *.txt

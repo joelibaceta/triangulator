@@ -5,6 +5,8 @@ This package will triangulate any polygon and return a list of triangles
 
 > By now  there is only one algorithm available: ear clipping method
 
+![Example](./docs/Triangulate.png)
+
 ## Installation
 
 ```bash
