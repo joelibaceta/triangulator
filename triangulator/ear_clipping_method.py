@@ -1,6 +1,5 @@
-from triangulator.geometry.angles import get_polygon_internal_angle
-from triangulator.geometry.points import is_point_inside_triangle_barycentric
-
+import numpy as np
+import math
 def signed_area(polygon):
     """Calculate the signed area of a polygon to determine its winding order."""
     area = 0
@@ -15,7 +14,62 @@ def ensure_winding_order(polygon):
     if signed_area(polygon) < 0:
         polygon.reverse()  # Reverse if the order is clockwise
     return polygon
+def calculate_clockwise_angle(a, b, c):
+    """
+    calculate the counterclockwise angle between two vectors BA and BC
+    Args:
+        a, b, c (tuple): 2D coords of triangle vertices (x, y)
+    Returns:
+        float: counterclockwise angle in degrees
+    """
+    # vector BA and BC
+    ba = np.array([a[0] - b[0], a[1] - b[1]])
+    bc = np.array([c[0] - b[0], c[1] - b[1]])
+    
+    # cross product and magnitude
+    dot_product = np.dot(ba, bc)
+    magnitude_ba = np.linalg.norm(ba)
+    magnitude_bc = np.linalg.norm(bc)
+    
+    # calculate cos(theta)
+    cos_theta = dot_product / (magnitude_ba * magnitude_bc)
+    cos_theta = np.clip(cos_theta, -1.0, 1.0)  # avoid invalid value
+    angle = np.degrees(np.arccos(cos_theta))
+    
+    # check the direction of the angle
+    cross_product = ba[0] * bc[1] - ba[1] * bc[0]
+    if cross_product > 0:
+        # anticlockwise angle
+        angle = 360 - angle
+    
+    return angle
+def is_point_in_triangle(a, b, c, p):
+    """
+    check if point P is inside triangle ABC
+    Args:
+        a, b, c (tuple): vertices of the triangle, format (x, y)
+        p (tuple): pt to be checked, format (x, y)
+    Returns:
+        bool: True -> inside or on boundaries，False -> outside
+    """
+    # convert to numpy array
+    a, b, c, p = map(np.array, [a, b, c, p])
+    
+    # calculate vectors
+    ab = b - a
+    ap = p - a
+    bc = c - b
+    bp = p - b
+    ca = a - c
+    cp = p - c
 
+    # cross product
+    cross1 = np.cross(ab, ap)
+    cross2 = np.cross(bc, bp)
+    cross3 = np.cross(ca, cp)
+
+    # check the sign of the cross product
+    return (cross1 >= 0 and cross2 >= 0 and cross3 >= 0) or (cross1 <= 0 and cross2 <= 0 and cross3 <= 0)
 def triangulate(polygon: tuple) -> list:
     """
     This function will triangulate any polygon and return a list of triangles.
@@ -43,12 +97,8 @@ def triangulate(polygon: tuple) -> list:
             next_vertex = vertices[(index + 1) % len(vertices)]  # using mod to avoid index out of range
             vertex = vertices[index]
 
-            # Get Vector from prev_vertex to vertex
-            vector1 = (vertex[0] - prev_vertex[0], vertex[1] - prev_vertex[1])
-            # Get Vector from vertex to next_vertex
-            vector2 = (next_vertex[0] - vertex[0], next_vertex[1] - vertex[1])
-            # Get internal angle
-            angle = get_polygon_internal_angle(vector1, vector2)
+        
+            angle = calculate_clockwise_angle(prev_vertex, vertex, next_vertex)
 
             if angle >= 180:
                 # Skip because angle is greater than or equal to 180
@@ -59,12 +109,9 @@ def triangulate(polygon: tuple) -> list:
                 # Get vertices that are not part of the triangle
                 points = [p for p in original_vertices if p not in triangle]
                 # Check if there is a vertex inside the triangle using barycentric coordinates
-                inside_evaluation = [is_point_inside_triangle_barycentric(triangle, point) for point in points]
+                inside_evaluation = [is_point_in_triangle(prev_vertex,vertex,next_vertex, point) for point in points]
                 # If no points are inside the triangle
-                if True in inside_evaluation:
-                    # Skip because a point is inside the triangle
-                    continue
-                else:
+                if not any(inside_evaluation):
                     # Add triangle to final triangles
                     final_triangles.append(triangle)
                     # Remove vertex from vertices
@@ -72,5 +119,10 @@ def triangulate(polygon: tuple) -> list:
                     # Increment triangles found
                     triangles_found += 1
                     break
+
+        # Check for infinite loop
+        if triangles_found == 0:
+            print(f"Loop detected. Exiting. found {len(final_triangles)} triangles")
+            break
 
     return final_triangles
